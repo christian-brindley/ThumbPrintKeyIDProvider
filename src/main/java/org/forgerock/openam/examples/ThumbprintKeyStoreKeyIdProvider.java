@@ -29,9 +29,10 @@ import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.util.Base64URL;
 
 /**
- * The default {@link KeyStoreKeyIdProvider} implementation uses
- * {@link SecretsUtils#getStaticId(String, String, PublicKey)} to determine the key ID of the provided public key.
+ * KeyStoreKeyIdProvider implementation which provides key ids built from SHA1 hash of JWK thumbprint
+ * Uses nimbus library to provide hash of rfc7638 thumbprint
  */
+
 public class ThumbprintKeyStoreKeyIdProvider implements KeyStoreKeyIdProvider {
 
     @Override
