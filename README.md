@@ -1,5 +1,11 @@
 # ForgeRock AM - Key ID Provider
 
+By default, AM generates a key ID (kid) for each public key exposed in the jwk_uri URI when AM is configured as an OAuth 2.0 authorization server.
+
+For keys stored in a keystore secret store, you can customize how key ID values are determined by writing an implementation of the KeyStoreKeyIdProvider interface and configuring it in AM.
+
+This is a sample implementation which calculates the Key ID based on a SHA1 hash of the JWK thumbprint for each key, according to RFC 7638.
+
 ## Build The Source Code
 
 In order to build the project from the command line follow these steps:
