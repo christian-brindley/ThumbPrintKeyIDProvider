@@ -29,12 +29,13 @@ import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.util.Base64URL;
 
 /**
- * KeyStoreKeyIdProvider implementation which provides key ids built from SHA1 hash of JWK thumbprint
- * Uses nimbus library to provide hash of rfc7638 thumbprint
+ * KeyStoreKeyIdProvider implementation for ForgeRock AM.
+ *
+ * Provides key ids built from SHA1 hash of JWK thumbprint
+ * Uses nimbus utils to provide rfc7638 compliant thumbprint
  */
 
 public class ThumbprintKeyStoreKeyIdProvider implements KeyStoreKeyIdProvider {
-
     @Override
     public String getKeyId(KeyUse keyUse, String alias, PublicKey publicKey, Optional<Certificate> certificate) {
         if (publicKey instanceof ECPublicKey) {
@@ -46,7 +47,7 @@ public class ThumbprintKeyStoreKeyIdProvider implements KeyStoreKeyIdProvider {
                 return thumbprint.toString();
             }
             catch (Exception e) {
-                throw new IllegalArgumentException("Can't decipher EC key " + e);
+                throw new IllegalArgumentException("Can't decipher EC key [" + e + "]");
             }
         } else if (publicKey instanceof RSAPublicKey) {
             try {
@@ -55,7 +56,7 @@ public class ThumbprintKeyStoreKeyIdProvider implements KeyStoreKeyIdProvider {
                 return thumbprint.toString();
             }
             catch (Exception e) {
-                throw new IllegalArgumentException("Can't decipher RSA key");
+                throw new IllegalArgumentException("Can't decipher RSA key [" + e + "]");
             }
 
         } else {
@@ -63,6 +64,9 @@ public class ThumbprintKeyStoreKeyIdProvider implements KeyStoreKeyIdProvider {
         }
     }
 
+    /**
+     * Figure out curve from EC public key
+     */
     private Curve getCurve(ECPublicKey ecPublicKey) {
         Curve c = null;
 
